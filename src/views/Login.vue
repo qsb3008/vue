@@ -59,19 +59,19 @@ export default {
   methods: {
     loginIn () {
       cgiService.login(this.metaForm).then(res => {
-          console.log(res, 587);
-          
+        console.log(res, 587)
+
         // if (res.code == 0) {
         //   this.$router.replace("/");
         // } else {
         //   this.$message.error(res.msg);
         // }
-      });
+      })
     }
   },
   created () {
     cgiService.verificationCode().then(res => {
-        this.imgSrc = res.img
+      this.imgSrc = res.img
     })
   }
 }

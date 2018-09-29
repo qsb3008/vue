@@ -5,10 +5,10 @@ const verificationCode = () => {
 }
 
 const login = (params) => {
-    return API.post('LoginInfo/sendIn', params).catch(err => { console.warn(err) })
-  }
+  return API.post('LoginInfo/sendIn', params).catch(err => { console.warn(err) })
+}
 
 export {
-    verificationCode,
-    login
+  verificationCode,
+  login
 }
