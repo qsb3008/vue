@@ -27,9 +27,9 @@
   </el-header>
   <el-container>
     <el-aside width="auto">
-    <el-menu default-active="9" class="el-menu-vertical-demo" :collapse="isCollapse" unique-opened router>
+    <el-menu menu-trigger="click" :default-active="defActive" class="el-menu-vertical-demo" :collapse="isCollapse" @select="selectMenu" unique-opened router>
       <template v-for="item in menuData">
-        <el-submenu v-if="item.childs.length > 0" :key="item.iId" :index="item.szUrl">
+        <el-submenu v-if="item.childs.length > 0" :key="item.iId" :index="item.iId">
             <template slot="title">
             <i class="el-icon-location"></i>
             <span slot="title">{{item.szName}}</span>
@@ -120,6 +120,16 @@ export default {
       isCollapse: false,
       activeIndex: '1',
       menuData: []
+    }
+  },
+  computed: {
+    defActive(){
+      return this.$route.path
+    }
+  },
+  methods: {
+    selectMenu (index, indexPath) {
+      console.log(index, indexPath, 666)
     }
   },
   created () {

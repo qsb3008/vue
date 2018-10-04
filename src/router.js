@@ -13,23 +13,47 @@ export default new Router({
     },
     {
       path: '/about',
-      name: 'about',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/Layout.vue'),
       children: [{
         path: '',
-        component: () => import(/* webpackChunkName: 'components' */ './views/About.vue')
+        name: 'about',
+        component: () => import('./views/About.vue')
       }]
     },
     {
       path: '/login',
       name: 'login',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Login.vue')
+      component: () => import('./views/Login.vue')
+    },
+    {
+      path: '/user/menu',
+      component: () => import('./views/Layout.vue'),
+      children: [{
+        path: '',
+        name: 'userMenu',
+        component: () => import('./views/user/menu.vue')
+      }]
+    },
+    {
+      path: '/user/group',
+      component: () => import('./views/Layout.vue'),
+      children: [{
+        path: '',
+        name: 'userGroup',
+        component: () => import('./views/user/group.vue')
+      }]
+    },
+    {
+      path: '/user/list',
+      component: () => import('./views/Layout.vue'),
+      children: [{
+        path: '',
+        name: 'userList',
+        component: () => import('./views/user/list.vue')
+      }]
     }
   ]
 })
