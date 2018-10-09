@@ -21,7 +21,7 @@
       </div>
       <div class="user-info">
         <span>admin</span>
-        <span>退出</span>
+        <span @click="quit" class="pointer">退出</span>
       </div>
     </div>
   </el-header>
@@ -43,12 +43,98 @@
       </template>
     </el-menu>
     </el-aside>
-    <el-main>
-        <router-view></router-view>
+    <el-main class="content-wrapper">
+        <div class="tab-menu">
+          <!-- <router-link ref="tag" class="tag-nav-item" v-for="(item, index) in tabMenu" 
+          :to="item.path" :key="index">
+              {{item.name}} -->
+              <!-- <span class='el-icon-close' ></span> -->
+          <!-- </router-link> -->
+          <el-button plain v-for="(item, key) in tabMenu" :key="key" :class="isActive(item) ? 'cur' : ''" @click="linkTo(item)">{{item.name}} <i class="el-icon-close" @click.prevent.stop="closeTheTag(item, key)"></i></el-button>
+        </div>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
     </el-main>
   </el-container>
 </el-container>
 </template>
+
+<script>
+import * as cgiService from '../api/cgiService'
+import { log } from 'util';
+import { setTimeout } from 'timers';
+export default {
+  data () {
+    return {
+      isCollapse: false,
+      activeIndex: '1',
+      menuData: []
+    }
+  },
+  computed: {
+    defActive () {
+      return this.$route.path
+    },
+    tabMenu () {
+      return this.$store.state.tabMenu
+    }
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    $route () {
+        let path = this.$route.path
+        let isInTabMenu = Object.values(this.$store.state.tabMenu).some((item) => {
+          return item.path === path
+        })
+        if (!isInTabMenu) {
+          this.selectMenu(path)
+        }
+    }
+  },
+  methods: {
+    linkTo (item) {
+      this.$router.replace({path: item.path})
+    },
+    closeTheTag (item, index) {
+      let tabList = Object.values(this.$store.state.tabMenu)
+      if (tabList.length > 1) {
+        this.$store.commit('removeTabMenuItem', item)
+        tabList = Object.values(this.$store.state.tabMenu)
+        if (item.path === this.$route.path) {
+          this.$router.push({path: tabList[0].path})
+        }
+      }
+    },
+    isActive(item){
+      return item.path === this.$route.path
+    },
+    handleClose(tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1);
+    },
+    selectMenu (index) {
+      this.$store.commit('addTabMenu', {
+        name: this.$store.state.navList[index]['szName'],
+        path: index
+      })
+    },
+    quit () {
+      cgiService.sendOut().then(res => {
+        this.$router.replace('/login')
+      })
+    }
+  },
+  created () {
+    cgiService.getUserMenu().then(res => {
+      this.menuData = res.data
+      this.$store.commit('setNavListMap', this.menuData)
+    })
+  },
+  mounted () {
+    if (true) {}
+  }
+}
+</script>
 
 <style lang="scss">
 html,body{
@@ -60,6 +146,27 @@ html,body{
   color: white;
   font-size: 28px;
   padding-right: 20px;
+}
+.content-wrapper{
+  padding: 0;
+}
+.tab-menu{
+  height: 75px;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+  padding: 20px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  i:hover{
+    transform: scale(1.2)
+  }
+  .cur,.cur:hover,.cur:focus,.cur:active{
+    background: #409EFF;
+    color: white;
+    border-color: #409EFF;
+  }
 }
 .toggle-sidebar{
   line-height: 60px;
@@ -73,7 +180,8 @@ html,body{
   line-height: 60px;
   color: white;
   span{
-    padding-right: 20px;
+    padding: 3px;
+    margin-right: 20px;
   }
 }
 .el-header{
@@ -111,31 +219,3 @@ html,body{
   }
 }
 </style>
-
-<script>
-import * as cgiService from '../api/cgiService'
-export default {
-  data () {
-    return {
-      isCollapse: false,
-      activeIndex: '1',
-      menuData: []
-    }
-  },
-  computed: {
-    defActive(){
-      return this.$route.path
-    }
-  },
-  methods: {
-    selectMenu (index, indexPath) {
-      console.log(index, indexPath, 666)
-    }
-  },
-  created () {
-    cgiService.getUserMenu().then(res => {
-      this.menuData = res.data
-    })
-  }
-}
-</script>

@@ -59,10 +59,10 @@ export default {
   methods: {
     loginIn () {
       cgiService.login(this.metaForm).then(res => {
-        if (res.code == 0) {
-          this.$router.replace("/about");
+        if (parseInt(res.code) === 0) {
+          this.$router.replace('/about')
         } else {
-          this.$message.error(res.msg);
+          this.$message.error(res.msg)
         }
       })
     }

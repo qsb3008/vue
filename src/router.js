@@ -34,6 +34,7 @@ export default new Router({
       children: [{
         path: '',
         name: 'userMenu',
+        meta: {pathName: '菜单列表'},
         component: () => import('./views/user/menu.vue')
       }]
     },
@@ -42,7 +43,8 @@ export default new Router({
       component: () => import('./views/Layout.vue'),
       children: [{
         path: '',
-        name: 'userGroup',
+        name: '用户分组',
+        meta: {pathName: '用户分组'},
         component: () => import('./views/user/group.vue')
       }]
     },
@@ -51,8 +53,18 @@ export default new Router({
       component: () => import('./views/Layout.vue'),
       children: [{
         path: '',
-        name: 'userList',
+        name: '用户列表',
+        meta: {pathName: '用户列表'},
         component: () => import('./views/user/list.vue')
+      }]
+    },
+    {
+      path: '/user/role',
+      component: () => import('./views/Layout.vue'),
+      children: [{
+        path: '',
+        name: 'userRole',
+        component: () => import('./views/user/role.vue')
       }]
     }
   ]

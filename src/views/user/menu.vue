@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button type="primary" @click="addMenu()">新增一级菜单</el-button>
+        <el-button type="primary" @click="addMenu()"><i class="el-icon-plus"></i> 新增一级菜单</el-button>
         <div class="table-wrapper">
             <el-table
             :data="pageList"
@@ -18,7 +18,7 @@
                 <el-table-column
                     prop="status"
                     label="状态">
-                </el-table-column>        
+                </el-table-column>
                 <el-table-column
                     prop="level"
                     label="level">
@@ -68,77 +68,74 @@ const ACTION_TYPE = {
   CREATE_ROOT_MENU: 'root_menu'
 }
 export default {
-    data () {
-        return {
-            pageList: [],
-            showDialog: false,
-            actionType: ACTION_TYPE,
-            metaForm: {},
-            editing: false
-        }
-    },
-    methods: {
-        addMenu (row = null) {
-            this.showDialog = true
-            if (!row) {
-                this.metaForm = {
-                    id: '0',
-                    parentpageid: '0',
-                    level: '1',
-                    status: '100110',
-                    description: ''
-                };
-            } else {
-                this.metaForm.id = '0'
-                this.metaForm.parentpageid = row.parentpageid
-                this.metaForm.level = String(parseInt(row.level) + 1)
-                this.metaForm.status = row.status
-                this.metaForm.description = ''
-            }
-        },
-        editMenu (row) {
-            this.showDialog = true
-            this.editing = true
-            console.log(row, ': row')
-            this.metaForm = Object.assign({}, row)
-            console.log(this.metaForm, ': row')
-        },
-        delMenu (row) {
-            var ids = [];
-            ids.push(row.id);
-            console.log(ids, ':ids')
-            this.$confirm("确定要删除此笔数据?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-            }).then(() => {
-                cgiService.delData({ids: ids}).then(res => {
-                    this.showDialog = false
-                    this.queryPageList()
-                })
-            })
-        },
-        closeHandler () {
-            this.metaForm = {}
-            this.editing = false
-        },
-        submit () {
-            cgiService.saveData(this.metaForm).then(res => {
-                this.showDialog = false
-                this.queryPageList()
-            })
-        },
-        queryPageList () {
-            cgiService.PagesOperationPageList().then(res => {
-                this.pageList = res.data
-            })
-        }
-    },
-    created () {
-        cgiService.PagesOperationPageList().then(res => {
-            this.pageList = res.data
-        })
+  data () {
+    return {
+      pageList: [],
+      showDialog: false,
+      actionType: ACTION_TYPE,
+      metaForm: {},
+      editing: false
     }
+  },
+  methods: {
+    addMenu (row = null) {
+      this.showDialog = true
+      if (!row) {
+        this.metaForm = {
+          id: '0',
+          parentpageid: '0',
+          level: '1',
+          status: '100110',
+          description: ''
+        }
+      } else {
+        this.metaForm.id = '0'
+        this.metaForm.parentpageid = row.parentpageid
+        this.metaForm.level = String(parseInt(row.level) + 1)
+        this.metaForm.status = row.status
+        this.metaForm.description = ''
+      }
+    },
+    editMenu (row) {
+      this.showDialog = true
+      this.editing = true
+      this.metaForm = Object.assign({}, row)
+    },
+    delMenu (row) {
+      var ids = []
+      ids.push(row.id)
+      this.$confirm('确定要删除此笔数据?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        cgiService.delData({ ids: ids }).then(res => {
+          this.showDialog = false
+          this.queryPageList()
+        })
+      })
+    },
+    closeHandler () {
+      this.metaForm = {}
+      this.editing = false
+    },
+    submit () {
+      cgiService.saveData(this.metaForm).then(res => {
+        this.showDialog = false
+        this.queryPageList()
+      })
+    },
+    queryPageList () {
+      cgiService.PagesOperationPageList().then(res => {
+        this.pageList = res.data
+      })
+    }
+  },
+  created () {
+    cgiService.PagesOperationPageList().then(res => {
+      this.pageList = res.data
+    })
+  }
 }
 </script>
 

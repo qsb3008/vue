@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button type="primary" @click="addMenu()">新增一级菜单</el-button>
+        <el-button type="primary" @click="addMenu()"><i class="el-icon-plus"></i> 新增用户</el-button>
         <div class="table-wrapper">
             <el-table
             :data="pageList"
@@ -18,7 +18,7 @@
                 <el-table-column
                     prop="status"
                     label="状态">
-                </el-table-column>        
+                </el-table-column>
                 <el-table-column label="操作" align="left" width="180">
                     <template slot-scope="scope">
                         <el-button type="text" v-if="scope.row.level==1 || scope.row.level==2" @click="addMenu(scope.row)">新增</el-button>
@@ -72,79 +72,77 @@ const ACTION_TYPE = {
   CREATE_ROOT_MENU: 'root_menu'
 }
 export default {
-    data () {
-        return {
-            pageList: [],
-            showDialog: false,
-            actionType: ACTION_TYPE,
-            metaForm: {
-                id: '0',
-                useracoount: '',
-                password: '',
-                username: '',
-                email: '',
-                mobilenumber: '',
-                description: '',
-                status: ''
-            },
-            editing: false
-        }
-    },
-    methods: {
-        addMenu (row = null) {
-            this.showDialog = true
-            if (!row) {
-                
-            } else {
-                this.metaForm.id = '0'
-                this.metaForm.parentpageid = row.parentpageid
-                this.metaForm.level = String(parseInt(row.level) + 1)
-                this.metaForm.status = row.status
-                this.metaForm.description = ''
-            }
-        },
-        editMenu (row) {
-            this.showDialog = true
-            this.editing = true
-            this.metaForm = Object.assign({}, row)
-            console.log(this.metaForm, ': row')
-        },
-        delMenu (row) {
-            var ids = [];
-            ids.push(row.id);
-            console.log(ids, ':ids')
-            this.$confirm("确定要删除此笔数据?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
-            }).then(() => {
-                cgiService.userRoleDelData({ids: ids}).then(res => {
-                    this.showDialog = false
-                    this.queryPageList()
-                })
-            })
-        },
-        closeHandler () {
-            this.metaForm = {}
-            this.editing = false
-        },
-        submit () {
-            cgiService.UserRoleSaveData(this.metaForm).then(res => {
-                this.showDialog = false
-                this.queryPageList()
-            })
-        },
-        queryPageList () {
-            cgiService.userList().then(res => {
-                this.pageList = res.data
-            })
-        }
-    },
-    created () {
-        cgiService.userList().then(res => {
-            this.pageList = res.data
-        })
+  data () {
+    return {
+      pageList: [],
+      showDialog: false,
+      actionType: ACTION_TYPE,
+      metaForm: {
+        id: '0',
+        useracoount: '',
+        password: '',
+        username: '',
+        email: '',
+        mobilenumber: '',
+        description: '',
+        status: ''
+      },
+      editing: false
     }
+  },
+  methods: {
+    addMenu (row = null) {
+      this.showDialog = true
+      if (!row) {
+
+      } else {
+        this.metaForm.id = '0'
+        this.metaForm.parentpageid = row.parentpageid
+        this.metaForm.level = String(parseInt(row.level) + 1)
+        this.metaForm.status = row.status
+        this.metaForm.description = ''
+      }
+    },
+    editMenu (row) {
+      this.showDialog = true
+      this.editing = true
+      this.metaForm = Object.assign({}, row)
+    },
+    delMenu (row) {
+      var ids = []
+      ids.push(row.id)
+      this.$confirm('确定要删除此笔数据?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        cgiService.userRoleDelData({ ids: ids }).then(res => {
+          this.showDialog = false
+          this.queryPageList()
+        })
+      })
+    },
+    closeHandler () {
+      this.metaForm = {}
+      this.editing = false
+    },
+    submit () {
+      cgiService.UserRoleSaveData(this.metaForm).then(res => {
+        this.showDialog = false
+        this.queryPageList()
+      })
+    },
+    queryPageList () {
+      cgiService.userList().then(res => {
+        this.pageList = res.data
+      })
+    }
+  },
+  created () {
+    cgiService.userList().then(res => {
+      this.pageList = res.data
+    })
+  }
 }
 </script>
 

@@ -15,6 +15,13 @@ class APIError {
 }
 
 const isServerStatusError = response => response.code !== 'undefined' && response.code !== 0
+// const isServerStatusError = response => {
+//   if (response) {
+//     return false
+//   } else {
+//     return true
+//   }
+// }
 
 const apiResponseHandler = (res) => {
   const response = res.data

@@ -23,4 +23,7 @@
     }
   }
 }
+.pointer{
+  cursor: pointer;
+}
 </style>
