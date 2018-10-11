@@ -70,7 +70,8 @@
 </template>
 
 <script>
-import * as cgiService from '../../api/cgiService'
+import cgiService from '../../api/cgiService'
+
 const ACTION_TYPE = {
   CREATE: 'create',
   EDIT: 'edit',

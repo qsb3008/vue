@@ -36,7 +36,7 @@ export default new Vuex.Store({
         }
       })
       state.navList = routerMap
-    } 
+    }
   },
   actions: {
     addTabMenu (context) {

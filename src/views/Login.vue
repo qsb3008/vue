@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import * as cgiService from '../api/cgiService'
+import cgiService from '../api/cgiService'
 export default {
   data () {
     return {
@@ -60,7 +60,7 @@ export default {
     loginIn () {
       cgiService.login(this.metaForm).then(res => {
         if (parseInt(res.code) === 0) {
-          this.$router.replace('/about')
+          this.$router.replace('/user/menu')
         } else {
           this.$message.error(res.msg)
         }

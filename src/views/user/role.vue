@@ -1,7 +1,7 @@
 <template>
 <div class="m-6">
     <div class="mb-6">
-        <!-- <vue-ads-table-tree
+        <vue-ads-table-tree
             :columns="columns"
             :async-call="asyncCall"
             :rows="rows"
@@ -22,14 +22,14 @@
                 <el-button type="text">编辑</el-button>
                 <el-button type="text">删除</el-button>
             </template>
-        </vue-ads-table-tree> -->
+        </vue-ads-table-tree>
     </div>
 </div>
 </template>
 
 <script>
 import VueAdsTableTree from 'vue-ads-table-tree'
-import * as cgiService from '../../api/cgiService'
+import cgiService from '../../api/cgiService'
 export default {
   data () {
     return {
@@ -63,7 +63,7 @@ export default {
   methods: {
     async asyncCall (range, filter, sortColumns, parent) {
       await cgiService.PagesOperationPageTree().then(res => {
-        this.rows = res
+        this.rows = res.data
       })
 
       let startRows = this.rows

@@ -39,16 +39,57 @@
         <el-dialog
             title="新增菜单"
             :visible.sync="showDialog"
-            width="30%"
+            width="40%"
             @close="closeHandler">
-                <el-form ref="form" :model="metaForm" label-width="120px">
-                    <el-form-item label="名称">
+                <el-form ref="form" :model="metaForm" label-width="130px" style="padding-right:40px;">
+                    <el-form-item label="名称：">
                         <el-input v-model="metaForm.pagename"></el-input>
                     </el-form-item>
-                    <el-form-item label="URL" v-show="(!editing && (metaForm.level == '3' || metaForm.level == '2')) || (editing && (metaForm.level == '3' || metaForm.level == '2'))">
-                        <el-input v-model="metaForm.pageurl"></el-input>
+                    <el-form-item label="URL：" v-show="(!editing && (metaForm.level == '3' || metaForm.level == '2')) || (editing && (metaForm.level == '3' || metaForm.level == '2'))">
+                        <!-- <el-input v-model="metaForm.pageurl"></el-input> -->
+                        <el-select v-model="metaForm.pageurl" clearable placeholder="请选择">
+                          <el-option
+                            v-for="(item, key) in metaForm.urlList"
+                            :key="key"
+                            :label="key"
+                            :value="key">
+                          </el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="排序">
+                    <el-form-item label="图标文件(正常)：">
+                        <el-input v-model="metaForm.iconURL"></el-input>
+                    </el-form-item>
+                    <el-form-item label="图标文件(选中)：">
+                        <el-input v-model="metaForm.selIconURL"></el-input>
+                    </el-form-item>
+                    <el-form-item label="需要授权：">
+                        <el-radio v-model="metaForm.needAuthorized" label="1">是</el-radio>
+                        <el-radio v-model="metaForm.needAuthorized" label="0">否</el-radio>
+                    </el-form-item>
+                    <el-form-item label="允许代理使用：">
+                        <el-radio v-model="metaForm.enableAgent" label="1">是</el-radio>
+                        <el-radio v-model="metaForm.enableAgent" label="0">否</el-radio>
+                    </el-form-item>
+                    <el-form-item label="展开子页面：">
+                        <el-radio v-model="metaForm.isExpand" label="1">是</el-radio>
+                        <el-radio v-model="metaForm.isExpand" label="0">否</el-radio>
+                    </el-form-item>
+                    <el-form-item label="隐藏导航窗口：">
+                         <el-radio v-model="metaForm.isHideNavigator" label="1">是</el-radio>
+                        <el-radio v-model="metaForm.isHideNavigator" label="0">否</el-radio>
+                    </el-form-item>
+                    <el-form-item label="禁用：">
+                         <el-radio v-model="metaForm.isDisabled" label="1">是</el-radio>
+                        <el-radio v-model="metaForm.isDisabled" label="0">否</el-radio>
+                    </el-form-item>
+                    <el-form-item label="打开方式：">
+                         <el-radio v-model="metaForm.openMode" label="1">是</el-radio>
+                        <el-radio v-model="metaForm.openMode" label="0">否</el-radio>
+                    </el-form-item>
+                    <el-form-item label="描述：">
+                        <el-input v-model="metaForm.description"></el-input>
+                    </el-form-item>
+                    <el-form-item label="排序：">
                         <el-input v-model="metaForm.sort"></el-input>
                     </el-form-item>
                 </el-form>
@@ -61,7 +102,7 @@
 </template>
 
 <script>
-import * as cgiService from '../../api/cgiService'
+import cgiService from '../../api/cgiService'
 const ACTION_TYPE = {
   CREATE: 'create',
   EDIT: 'edit',
@@ -74,32 +115,48 @@ export default {
       showDialog: false,
       actionType: ACTION_TYPE,
       metaForm: {},
-      editing: false
+      editing: false,
+      createDefaultConfig: {
+        id: '0',
+        parentpageid: '0',
+        level: '1',
+        status: '100110',
+        iconURL: '',
+        selIconURL: '',
+        needAuthorized: '1',
+        enableAgent: '0',
+        isExpand: '0',
+        isHideNavigator: '0',
+        isDisabled: '0',
+        openMode: '0',
+        description: ''
+      }
     }
   },
   methods: {
     addMenu (row = null) {
-      this.showDialog = true
+      cgiService.getPlatePageUrl().then(res => {
+        this.metaForm.urlList = res
+        this.showDialog = true
+      })
       if (!row) {
-        this.metaForm = {
-          id: '0',
-          parentpageid: '0',
-          level: '1',
-          status: '100110',
-          description: ''
-        }
+        this.metaForm = Object.assign({}, this.createDefaultConfig)
       } else {
-        this.metaForm.id = '0'
-        this.metaForm.parentpageid = row.parentpageid
-        this.metaForm.level = String(parseInt(row.level) + 1)
-        this.metaForm.status = row.status
-        this.metaForm.description = ''
+        this.metaForm = Object.assign({}, this.createDefaultConfig, {
+          parentpageid: row.pageid,
+          level: String(parseInt(row.level) + 1),
+          status: row.status
+        })
       }
     },
     editMenu (row) {
-      this.showDialog = true
-      this.editing = true
       this.metaForm = Object.assign({}, row)
+      this.metaForm.pageurl = row.pageurl
+      cgiService.getPlatePageUrl().then(res => {
+        this.metaForm.urlList = res
+        this.showDialog = true
+        this.editing = true
+      })
     },
     delMenu (row) {
       var ids = []
