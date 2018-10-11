@@ -45,14 +45,9 @@
     </el-aside>
     <el-main class="content-wrapper">
         <div class="tab-menu">
-          <!-- <router-link ref="tag" class="tag-nav-item" v-for="(item, index) in tabMenu" 
-          :to="item.path" :key="index">
-              {{item.name}} -->
-              <!-- <span class='el-icon-close' ></span> -->
-          <!-- </router-link> -->
           <el-button plain v-for="(item, key) in tabMenu" :key="key" :class="isActive(item) ? 'cur' : ''" @click="linkTo(item)">{{item.name}} <i class="el-icon-close" @click.prevent.stop="closeTheTag(item, key)"></i></el-button>
         </div>
-        <el-main>
+        <el-main class="inner-content">
           <router-view></router-view>
         </el-main>
     </el-main>
@@ -61,9 +56,8 @@
 </template>
 
 <script>
-import * as cgiService from '../api/cgiService'
-import { log } from 'util';
-import { setTimeout } from 'timers';
+import cgiService from '../api/cgiService'
+
 export default {
   data () {
     return {
@@ -83,18 +77,18 @@ export default {
   watch: {
     // 如果路由有变化，会再次执行该方法
     $route () {
-        let path = this.$route.path
-        let isInTabMenu = Object.values(this.$store.state.tabMenu).some((item) => {
-          return item.path === path
-        })
-        if (!isInTabMenu) {
-          this.selectMenu(path)
-        }
+      let path = this.$route.path
+      let isInTabMenu = Object.values(this.$store.state.tabMenu).some((item) => {
+        return item.path === path
+      })
+      if (!isInTabMenu) {
+        this.selectMenu(path)
+      }
     }
   },
   methods: {
     linkTo (item) {
-      this.$router.replace({path: item.path})
+      this.$router.replace({ path: item.path })
     },
     closeTheTag (item, index) {
       let tabList = Object.values(this.$store.state.tabMenu)
@@ -102,15 +96,15 @@ export default {
         this.$store.commit('removeTabMenuItem', item)
         tabList = Object.values(this.$store.state.tabMenu)
         if (item.path === this.$route.path) {
-          this.$router.push({path: tabList[0].path})
+          this.$router.push({ path: tabList[0].path })
         }
       }
     },
-    isActive(item){
+    isActive (item) {
       return item.path === this.$route.path
     },
-    handleClose(tag) {
-      this.tags.splice(this.tags.indexOf(tag), 1);
+    handleClose (tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1)
     },
     selectMenu (index) {
       this.$store.commit('addTabMenu', {
@@ -129,9 +123,6 @@ export default {
       this.menuData = res.data
       this.$store.commit('setNavListMap', this.menuData)
     })
-  },
-  mounted () {
-    if (true) {}
   }
 }
 </script>
@@ -140,6 +131,9 @@ export default {
 html,body{
   height: 100%;
   margin: 0;
+}
+.inner-content{
+  height: calc(100% - 75px);
 }
 .logo{
   line-height: 60px;
