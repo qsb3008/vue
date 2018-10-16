@@ -31,18 +31,81 @@
         <el-dialog
             title="新增用户"
             :visible.sync="showDialog"
-            width="50%"
+            width="800px"
             @close="closeHandler">
                 <el-form ref="form" :model="metaForm" label-width="120px">
                     <el-form-item label="用户账号">
                         <el-input v-model="metaForm.useracoount"></el-input>
                     </el-form-item>
-                    <el-form-item label="密码">
-                        <el-input v-model="metaForm.password"></el-input>
-                    </el-form-item>
                     <el-form-item label="用户名">
                         <el-input v-model="metaForm.username"></el-input>
                     </el-form-item>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="所属机构">
+                                <el-input v-model="metaForm.orgCode"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="用户类型">
+                                <el-input v-model="metaForm.userType"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="是否管理员">
+                                <el-input v-model="metaForm.adminFlag"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="账号启用">
+                                <el-input v-model="metaForm.activeFlag"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-form-item label="账号启用日期">
+                        <el-input v-model="metaForm.activedate"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账号失效日期">
+                        <el-input v-model="metaForm.expiredDate"></el-input>
+                    </el-form-item>
+                    <el-form-item label="访问策略编码">
+                        <el-input v-model="metaForm.APcode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码策略编码">
+                        <el-input v-model="metaForm.PPcode"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码">
+                        <el-input v-model="metaForm.pwd"></el-input>
+                    </el-form-item>
+                    <el-form-item label="旧密码">
+                        <el-input v-model="metaForm.oldpwd"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码生效日期">
+                        <el-input v-model="metaForm.pwdActiveDate"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码失效日期">
+                        <el-input v-model="metaForm.pwdExpiredDate"></el-input>
+                    </el-form-item>
+                    <el-form-item label="下次登录改密">
+                        <el-input v-model="metaForm.nextUpdatePwd"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码错误次数">
+                        <el-input v-model="metaForm.pwdTryCount"></el-input>
+                    </el-form-item>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="账号已锁定">
+                                <el-input v-model="metaForm.lockFlag"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="允许多重登录">
+                                <el-input v-model="metaForm.multiLogin"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                     <el-form-item label="邮箱">
                         <el-input v-model="metaForm.email"></el-input>
                     </el-form-item>
@@ -57,7 +120,7 @@
                     </el-form-item>
                 </el-form>
             <span slot="footer">
-                <el-button @click="showDialog = false">取 消</el-button>
+                <el-button @click="showDialog = true">取 消</el-button>
                 <el-button type="primary" @click="submit">确 定</el-button>
             </span>
         </el-dialog>

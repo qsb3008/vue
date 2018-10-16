@@ -39,26 +39,17 @@
             width="50%"
             @close="closeHandler">
                 <el-form ref="form" :model="metaForm" label-width="120px">
-                    <el-form-item label="角色id">
+                    <el-form-item label="角色代码">
                         <el-input v-model="metaForm.roleid"></el-input>
                     </el-form-item>
-                    <el-form-item label="英文名">
-                        <el-input v-model="metaForm.roleename"></el-input>
+                    <el-form-item label="角色名称">
+                        <el-input v-model="metaForm.rolename"></el-input>
                     </el-form-item>
-                    <el-form-item label="中文名">
-                        <el-input v-model="metaForm.rolecname"></el-input>
-                    </el-form-item>
-                    <el-form-item label="访问策略编号">
-                        <el-input v-model="metaForm.accessid"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码策略编号">
-                        <el-input v-model="metaForm.pwdpolicyid"></el-input>
+                    <el-form-item label="父角色代码">
+                        <el-input v-model="metaForm.parentroleid"></el-input>
                     </el-form-item>
                     <el-form-item label="描述">
                         <el-input v-model="metaForm.description"></el-input>
-                    </el-form-item>
-                    <el-form-item label="状态">
-                        <el-input v-model="metaForm.status"></el-input>
                     </el-form-item>
                 </el-form>
             <span slot="footer">

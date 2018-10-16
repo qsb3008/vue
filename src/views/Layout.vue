@@ -21,6 +21,7 @@
       </div>
       <div class="user-info">
         <span>admin</span>
+        <span @click="setting" class="pointer">设置</span>
         <span @click="quit" class="pointer">退出</span>
       </div>
     </div>
@@ -31,7 +32,7 @@
       <template v-for="item in menuData">
         <el-submenu v-if="item.childs.length > 0" :key="item.iId" :index="item.iId">
             <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-setting"></i>
             <span slot="title">{{item.szName}}</span>
             </template>
             <el-menu-item v-for="link in item.childs" :key="link.iId" :index="link.szUrl">{{link.szName}}</el-menu-item>
@@ -45,7 +46,7 @@
     </el-aside>
     <el-main class="content-wrapper">
         <div class="tab-menu">
-          <el-button plain v-for="(item, key) in tabMenu" :key="key" :class="isActive(item) ? 'cur' : ''" @click="linkTo(item)">{{item.name}} <i class="el-icon-close" @click.prevent.stop="closeTheTag(item, key)"></i></el-button>
+          <el-button plain :type="isActive(item) ? '' : 'info'" v-for="(item, key) in tabMenu" :key="key" @click="linkTo(item)">{{item.name}} <i class="el-icon-close" @click.prevent.stop="closeTheTag(item, key)"></i></el-button>
         </div>
         <el-main class="inner-content">
           <router-view></router-view>
@@ -81,7 +82,8 @@ export default {
       let isInTabMenu = Object.values(this.$store.state.tabMenu).some((item) => {
         return item.path === path
       })
-      if (!isInTabMenu) {
+
+      if (!isInTabMenu && path !== '/setting') {
         this.selectMenu(path)
       }
     }
@@ -116,6 +118,9 @@ export default {
       cgiService.sendOut().then(res => {
         this.$router.replace('/login')
       })
+    },
+    setting () {
+      this.$router.replace('/setting')
     }
   },
   created () {

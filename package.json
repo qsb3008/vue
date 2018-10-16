@@ -12,6 +12,7 @@
     "ag-grid-community": "^19.0.0",
     "ag-grid-vue": "^19.0.0",
     "axios": "^0.18.0",
+    "better-scroll": "^1.13.2",
     "element-ui": "^2.4.5",
     "vue": "^2.5.17",
     "vue-ads-table-tree": "^1.1.0",

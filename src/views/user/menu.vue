@@ -4,7 +4,7 @@
         <div class="table-wrapper">
             <el-table
             :data="pageList"
-            style="width: 100%" border>
+            style="width: 100%;" border>
                 <el-table-column
                     prop="pagename"
                     label="页面名字"
@@ -12,8 +12,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="pageurl"
-                    label="URL"
-                    width="180">
+                    label="URL">
                 </el-table-column>
                 <el-table-column
                     prop="status"
@@ -39,7 +38,7 @@
         <el-dialog
             title="新增菜单"
             :visible.sync="showDialog"
-            width="40%"
+            width="800px"
             @close="closeHandler">
                 <el-form ref="form" :model="metaForm" label-width="130px" style="padding-right:40px;">
                     <el-form-item label="名称：">
@@ -47,7 +46,7 @@
                     </el-form-item>
                     <el-form-item label="URL：" v-show="(!editing && (metaForm.level == '3' || metaForm.level == '2')) || (editing && (metaForm.level == '3' || metaForm.level == '2'))">
                         <!-- <el-input v-model="metaForm.pageurl"></el-input> -->
-                        <el-select v-model="metaForm.pageurl" clearable placeholder="请选择">
+                        <el-select v-model="metaForm.pageurl" clearable placeholder="请选择" class="select-width">
                           <el-option
                             v-for="(item, key) in metaForm.urlList"
                             :key="key"
@@ -57,35 +56,69 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="图标文件(正常)：">
-                        <el-input v-model="metaForm.iconURL"></el-input>
+                        <el-select v-model="value6" placeholder="请选择" class="select-width">
+                            <el-option
+                                v-for="item in cities"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                <span><i :class="item.value"></i></span>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="图标文件(选中)：">
-                        <el-input v-model="metaForm.selIconURL"></el-input>
+                        <el-select v-model="value7" placeholder="请选择" class="select-width">
+                            <el-option
+                                v-for="item in cities"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                <span><i :class="item.value"></i></span>
+                            </el-option>
+                        </el-select>
                     </el-form-item>
-                    <el-form-item label="需要授权：">
-                        <el-radio v-model="metaForm.needAuthorized" label="1">是</el-radio>
-                        <el-radio v-model="metaForm.needAuthorized" label="0">否</el-radio>
-                    </el-form-item>
-                    <el-form-item label="允许代理使用：">
-                        <el-radio v-model="metaForm.enableAgent" label="1">是</el-radio>
-                        <el-radio v-model="metaForm.enableAgent" label="0">否</el-radio>
-                    </el-form-item>
-                    <el-form-item label="展开子页面：">
-                        <el-radio v-model="metaForm.isExpand" label="1">是</el-radio>
-                        <el-radio v-model="metaForm.isExpand" label="0">否</el-radio>
-                    </el-form-item>
-                    <el-form-item label="隐藏导航窗口：">
-                         <el-radio v-model="metaForm.isHideNavigator" label="1">是</el-radio>
-                        <el-radio v-model="metaForm.isHideNavigator" label="0">否</el-radio>
-                    </el-form-item>
-                    <el-form-item label="禁用：">
-                         <el-radio v-model="metaForm.isDisabled" label="1">是</el-radio>
-                        <el-radio v-model="metaForm.isDisabled" label="0">否</el-radio>
-                    </el-form-item>
-                    <el-form-item label="打开方式：">
-                         <el-radio v-model="metaForm.openMode" label="1">是</el-radio>
-                        <el-radio v-model="metaForm.openMode" label="0">否</el-radio>
-                    </el-form-item>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="需要授权：">
+                                <el-radio v-model="metaForm.needAuthorized" label="1">是</el-radio>
+                                <el-radio v-model="metaForm.needAuthorized" label="0">否</el-radio>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="允许代理使用：">
+                                <el-radio v-model="metaForm.enableAgent" label="1">是</el-radio>
+                                <el-radio v-model="metaForm.enableAgent" label="0">否</el-radio>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="展开子页面：">
+                                <el-radio v-model="metaForm.isExpand" label="1">是</el-radio>
+                                <el-radio v-model="metaForm.isExpand" label="0">否</el-radio>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="隐藏导航窗口：">
+                                <el-radio v-model="metaForm.isHideNavigator" label="1">是</el-radio>
+                                <el-radio v-model="metaForm.isHideNavigator" label="0">否</el-radio>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="禁用：">
+                                <el-radio v-model="metaForm.isDisabled" label="1">是</el-radio>
+                                <el-radio v-model="metaForm.isDisabled" label="0">否</el-radio>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="打开方式：">
+                                <el-radio v-model="metaForm.openMode" label="1">是</el-radio>
+                                <el-radio v-model="metaForm.openMode" label="0">否</el-radio>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                     <el-form-item label="描述：">
                         <el-input v-model="metaForm.description"></el-input>
                     </el-form-item>
@@ -111,6 +144,21 @@ const ACTION_TYPE = {
 export default {
   data () {
     return {
+      cities: [{
+        value: 'el-icon-info'
+      }, {
+        value: 'el-icon-error'
+      }, {
+        value: 'el-icon-success'
+      }, {
+        value: 'el-icon-warning'
+      }, {
+        value: 'el-icon-question'
+      }, {
+        value: 'el-icon-back'
+      }],
+      value6: '',
+      value7: '',
       pageList: [],
       showDialog: false,
       actionType: ACTION_TYPE,
@@ -199,5 +247,8 @@ export default {
 <style lang='scss'>
 .table-wrapper{
     padding-top: 20px;
+}
+.select-width{
+    width: 100%;
 }
 </style>
