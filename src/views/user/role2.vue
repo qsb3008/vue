@@ -4,6 +4,7 @@
     <el-tree
       :data="data"
       :props="defaultProps"
+      :highlight-current="true"
       :expand-on-click-node="false"
       @node-click="handleNodeClick"></el-tree>
   </el-aside>
@@ -32,7 +33,7 @@ export default {
       data: [],
       defaultProps: {
         children: 'children',
-        label: 'pagename'
+        label: 'lastmodifiedtime'
       },
       currentNode: {},
       keyList: ['pageid', 'pageurl', 'description', 'sort', 'level', 'status', 'creator', 'createtime', 'updatetime', 'operation']

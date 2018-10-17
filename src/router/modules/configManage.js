@@ -4,7 +4,7 @@ let configManagePage = [ {
   children: [{
     path: '',
     name: '/org/list',
-    component: () => import('../../views/access/seek.vue')
+    component: () => import('../../views/access/orgList.vue')
   }]
 },
 {
@@ -13,7 +13,7 @@ let configManagePage = [ {
   children: [{
     path: '',
     name: '/group/list',
-    component: () => import('../../views/access/seek.vue')
+    component: () => import('../../views/access/groupList.vue')
   }]
 }]
 
