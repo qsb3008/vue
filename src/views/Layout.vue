@@ -46,7 +46,7 @@
     </el-aside>
     <el-main class="content-wrapper">
         <div class="tab-menu">
-          <el-button plain :type="isActive(item) ? '' : 'info'" v-for="(item, key) in tabMenu" :key="key" @click="linkTo(item)">{{item.name}} <i class="el-icon-close" @click.prevent.stop="closeTheTag(item, key)"></i></el-button>
+          <el-button plain :type="isActive(item) ? '' : 'info'" size="mini" v-for="(item, key) in tabMenu" :key="key" @click="linkTo(item)">{{item.name}} <i class="el-icon-close" @click.prevent.stop="closeTheTag(item, key)"></i></el-button>
         </div>
         <el-main class="inner-content">
           <router-view></router-view>
@@ -150,10 +150,10 @@ html,body{
   padding: 0;
 }
 .tab-menu{
-  height: 75px;
+  height: 55px;
   border: 1px solid #eee;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 12px;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;

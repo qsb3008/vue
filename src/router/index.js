@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '../views/Home.vue'
 import userRouter from './modules/user'
 import configManagePage from './modules/configManage'
+import authority from './modules/authority'
 
 Vue.use(Router)
 
@@ -31,7 +32,8 @@ let router = new Router({
       }]
     },
     ...configManagePage,
-    ...userRouter
+    ...userRouter,
+    ...authority
   ]
 })
 
