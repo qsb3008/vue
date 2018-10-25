@@ -5,11 +5,11 @@ import * as orgApi from './org'
 import * as sysApi from './sys'
 
 const cgiService = Object.assign(
-    { ...pagesOperation },
-    { ...userRole },
-    { ...loginInfo },
-    { ...orgApi },
-    { ...sysApi }
+  { ...pagesOperation },
+  { ...userRole },
+  { ...loginInfo },
+  { ...orgApi },
+  { ...sysApi }
 )
 
 export default cgiService

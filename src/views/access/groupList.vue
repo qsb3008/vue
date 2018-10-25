@@ -1,49 +1,64 @@
 <template>
-    <div>
-        <el-button type="primary" @click="addMenu()"><i class="el-icon-plus"></i> 新增用户</el-button>
-        <div class="table-wrapper">
-            <zk-table
-            :data="pageList"
-            :columns="columns"
-            :stripe="props.stripe"
-            :border="props.border"
-            :show-header="props.showHeader"
-            :show-summary="props.showSummary"
-            :show-row-hover="props.showRowHover"
-            :show-index="props.showIndex"
-            :tree-type="props.treeType"
-            :is-fold="props.isFold"
-            :expand-type="props.expandType"
-            :selection-type="props.selectionType"
-            style="width: 100%">             
-                <template slot="operation" scope="scope">
-                    <div>
-                        <el-button type="text" @click="addMenu(scope.row)">新增</el-button>
-                        <el-button type="text" @click="editMenu(scope.row)">编辑</el-button>
-                        <el-button type="text" @click="delMenu(scope.row)">删除</el-button>
-                    </div>
-                </template>
-            </zk-table>
-        </div>
-        <el-dialog
-            title="新增用户"
-            :visible.sync="showDialog"
-            width="50%"
-            @close="closeHandler">
-                <el-form ref="form" :model="metaForm" label-width="120px">
-                    <el-form-item label="orgcode">
-                        <el-input v-model="metaForm.orgcode"></el-input>
-                    </el-form-item>
-                    <el-form-item label="orgfullname">
-                        <el-input v-model="metaForm.orgfullname"></el-input>
-                    </el-form-item>
-                </el-form>
-            <span slot="footer">
-                <el-button @click="showDialog = false">取 消</el-button>
-                <el-button type="primary" @click="submit">确 定</el-button>
-            </span>
-        </el-dialog>
+  <div>
+    <el-button
+      type="primary"
+      @click="addMenu()"><i class="el-icon-plus"/> 新增用户</el-button>
+    <div class="table-wrapper">
+      <zk-table
+        :data="pageList"
+        :columns="columns"
+        :stripe="props.stripe"
+        :border="props.border"
+        :show-header="props.showHeader"
+        :show-summary="props.showSummary"
+        :show-row-hover="props.showRowHover"
+        :show-index="props.showIndex"
+        :tree-type="props.treeType"
+        :is-fold="props.isFold"
+        :expand-type="props.expandType"
+        :selection-type="props.selectionType"
+        style="width: 100%">
+        <template
+          slot="operation"
+          scope="scope">
+          <div>
+            <el-button
+              type="text"
+              @click="addMenu(scope.row)">新增</el-button>
+            <el-button
+              type="text"
+              @click="editMenu(scope.row)">编辑</el-button>
+            <el-button
+              type="text"
+              @click="delMenu(scope.row)">删除</el-button>
+          </div>
+        </template>
+      </zk-table>
     </div>
+    <el-dialog
+      :visible.sync="showDialog"
+      title="新增用户"
+      width="50%"
+      @close="closeHandler">
+      <el-form
+        ref="form"
+        :model="metaForm"
+        label-width="120px">
+        <el-form-item label="orgcode">
+          <el-input v-model="metaForm.orgcode"/>
+        </el-form-item>
+        <el-form-item label="orgfullname">
+          <el-input v-model="metaForm.orgfullname"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="showDialog = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="submit">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -56,6 +71,9 @@ const ACTION_TYPE = {
   CREATE_ROOT_MENU: 'root_menu'
 }
 export default {
+  components: {
+    ZkTable
+  },
   data () {
     return {
       pageList: [],
@@ -64,7 +82,7 @@ export default {
       metaForm: {
         id: '0',
         orgcode: '',
-        orgfullnam: '',
+        orgfullnam: ''
       },
       editing: false,
       props: {
@@ -117,14 +135,16 @@ export default {
       ]
     }
   },
-  components: {
-    ZkTable
+  created () {
+    cgiService.groupData().then(res => {
+      this.pageList = res.data
+    })
   },
   methods: {
     addMenu (row = null) {
       this.showDialog = true
       if (row) {
-          this.metaForm.parentorgid = row.orgid
+        this.metaForm.parentorgid = row.orgid
       }
     },
     editMenu (row) {
@@ -161,11 +181,6 @@ export default {
         this.pageList = res.data
       })
     }
-  },
-  created () {
-    cgiService.groupData().then(res => {
-      this.pageList = res.data
-    })
   }
 }
 </script>

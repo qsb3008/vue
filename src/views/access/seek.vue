@@ -1,67 +1,82 @@
 <template>
-    <div>
-        <el-button type="primary" @click="addMenu()"><i class="el-icon-plus"></i> 新增用户</el-button>
-        <div class="table-wrapper">
-            <el-table
-            :data="pageList"
-            style="width: 100%" border>
-                <el-table-column
-                    prop="useracoount"
-                    label="用户账号"
-                    width="180">
-                </el-table-column>
-                <el-table-column
-                    prop="username"
-                    label="用户名"
-                    width="180">
-                </el-table-column>
-                <el-table-column
-                    prop="status"
-                    label="状态">
-                </el-table-column>
-                <el-table-column label="操作" align="left" width="180">
-                    <template slot-scope="scope">
-                        <el-button type="text" v-if="scope.row.level==1 || scope.row.level==2" @click="addMenu(scope.row)">新增</el-button>
-                        <el-button type="text" @click="editMenu(scope.row)">编辑</el-button>
-                        <el-button type="text" @click="delMenu(scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
-        <el-dialog
-            title="新增用户"
-            :visible.sync="showDialog"
-            width="50%"
-            @close="closeHandler">
-                <el-form ref="form" :model="metaForm" label-width="120px">
-                    <el-form-item label="用户账号">
-                        <el-input v-model="metaForm.useracoount"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码">
-                        <el-input v-model="metaForm.password"></el-input>
-                    </el-form-item>
-                    <el-form-item label="用户名">
-                        <el-input v-model="metaForm.username"></el-input>
-                    </el-form-item>
-                    <el-form-item label="邮箱">
-                        <el-input v-model="metaForm.email"></el-input>
-                    </el-form-item>
-                    <el-form-item label="手机号码">
-                        <el-input v-model="metaForm.mobilenumber"></el-input>
-                    </el-form-item>
-                    <el-form-item label="描述">
-                        <el-input v-model="metaForm.description"></el-input>
-                    </el-form-item>
-                    <el-form-item label="状态">
-                        <el-input v-model="metaForm.status"></el-input>
-                    </el-form-item>
-                </el-form>
-            <span slot="footer">
-                <el-button @click="showDialog = false">取 消</el-button>
-                <el-button type="primary" @click="submit">确 定</el-button>
-            </span>
-        </el-dialog>
+  <div>
+    <el-button
+      type="primary"
+      @click="addMenu()"><i class="el-icon-plus"/> 新增用户</el-button>
+    <div class="table-wrapper">
+      <el-table
+        :data="pageList"
+        style="width: 100%"
+        border>
+        <el-table-column
+          prop="useracoount"
+          label="用户账号"
+          width="180"/>
+        <el-table-column
+          prop="username"
+          label="用户名"
+          width="180"/>
+        <el-table-column
+          prop="status"
+          label="状态"/>
+        <el-table-column
+          label="操作"
+          align="left"
+          width="180">
+          <template slot-scope="scope">
+            <el-button
+              v-if="scope.row.level==1 || scope.row.level==2"
+              type="text"
+              @click="addMenu(scope.row)">新增</el-button>
+            <el-button
+              type="text"
+              @click="editMenu(scope.row)">编辑</el-button>
+            <el-button
+              type="text"
+              @click="delMenu(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
+    <el-dialog
+      :visible.sync="showDialog"
+      title="新增用户"
+      width="50%"
+      @close="closeHandler">
+      <el-form
+        ref="form"
+        :model="metaForm"
+        label-width="120px">
+        <el-form-item label="用户账号">
+          <el-input v-model="metaForm.useracoount"/>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="metaForm.password"/>
+        </el-form-item>
+        <el-form-item label="用户名">
+          <el-input v-model="metaForm.username"/>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="metaForm.email"/>
+        </el-form-item>
+        <el-form-item label="手机号码">
+          <el-input v-model="metaForm.mobilenumber"/>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="metaForm.description"/>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-input v-model="metaForm.status"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="showDialog = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="submit">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -89,6 +104,11 @@ export default {
       },
       editing: false
     }
+  },
+  created () {
+    cgiService.userList().then(res => {
+      this.pageList = res.data
+    })
   },
   methods: {
     addMenu (row = null) {
@@ -137,11 +157,6 @@ export default {
         this.pageList = res.data
       })
     }
-  },
-  created () {
-    cgiService.userList().then(res => {
-      this.pageList = res.data
-    })
   }
 }
 </script>

@@ -1,59 +1,89 @@
 <template>
-<el-container class="ws-wrapper">
-  <el-header>
-    <div class="header-wrapper">
-      <div class="logo">大管家</div>
-      <div class="toggle-sidebar">
-        <i class="el-icon-menu" @click="isCollapse = !isCollapse"></i>
+  <el-container class="ws-wrapper">
+    <el-header>
+      <div class="header-wrapper">
+        <div class="logo">大管家</div>
+        <div class="toggle-sidebar">
+          <i
+            class="el-icon-menu"
+            @click="isCollapse = !isCollapse"/>
+        </div>
+        <div class="main-menu">
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            background-color="#01d8ae"
+            text-color="#fff"
+            active-text-color="#ffffff">
+            <el-menu-item index="1">处理中心</el-menu-item>
+            <el-menu-item index="2">消息中心</el-menu-item>
+            <el-menu-item index="3">订单管理</el-menu-item>
+          </el-menu>
+        </div>
+        <div class="user-info">
+          <span>admin</span>
+          <span
+            class="pointer"
+            @click="setting">设置</span>
+          <span
+            class="pointer"
+            @click="quit">退出</span>
+        </div>
       </div>
-      <div class="main-menu">
+    </el-header>
+    <el-container>
+      <el-aside width="auto">
         <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          mode="horizontal"
-          background-color="#01d8ae"
-          text-color="#fff"
-          active-text-color="#ffffff">
-          <el-menu-item index="1">处理中心</el-menu-item>
-          <el-menu-item index="2">消息中心</el-menu-item>
-          <el-menu-item index="3">订单管理</el-menu-item>
+          :default-active="defActive"
+          :collapse="isCollapse"
+          menu-trigger="click"
+          class="el-menu-vertical-demo"
+          unique-opened
+          router
+          @select="selectMenu">
+          <template v-for="item in menuData">
+            <el-submenu
+              v-if="item.childs.length > 0"
+              :key="item.iId"
+              :index="item.iId">
+              <template slot="title">
+                <i class="el-icon-setting"/>
+                <span slot="title">{{ item.szName }}</span>
+              </template>
+              <el-menu-item
+                v-for="link in item.childs"
+                :key="link.iId"
+                :index="link.szUrl">{{ link.szName }}</el-menu-item>
+            </el-submenu>
+            <el-menu-item
+              v-else
+              :key="item.iId"
+              :index="item.szUrl">
+              <i class="el-icon-setting"/>
+              <span slot="title">{{ item.szName }}</span>
+            </el-menu-item>
+          </template>
         </el-menu>
-      </div>
-      <div class="user-info">
-        <span>admin</span>
-        <span @click="setting" class="pointer">设置</span>
-        <span @click="quit" class="pointer">退出</span>
-      </div>
-    </div>
-  </el-header>
-  <el-container>
-    <el-aside width="auto">
-    <el-menu menu-trigger="click" :default-active="defActive" class="el-menu-vertical-demo" :collapse="isCollapse" @select="selectMenu" unique-opened router>
-      <template v-for="item in menuData">
-        <el-submenu v-if="item.childs.length > 0" :key="item.iId" :index="item.iId">
-            <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span slot="title">{{item.szName}}</span>
-            </template>
-            <el-menu-item v-for="link in item.childs" :key="link.iId" :index="link.szUrl">{{link.szName}}</el-menu-item>
-        </el-submenu>
-        <el-menu-item v-else :key="item.iId" :index="item.szUrl">
-            <i class="el-icon-setting"></i>
-            <span slot="title">{{item.szName}}</span>
-        </el-menu-item>
-      </template>
-    </el-menu>
-    </el-aside>
-    <el-main class="content-wrapper">
+      </el-aside>
+      <el-main class="content-wrapper">
         <div class="tab-menu">
-          <el-button plain :type="isActive(item) ? '' : 'info'" size="mini" v-for="(item, key) in tabMenu" :key="key" @click="linkTo(item)">{{item.name}} <i class="el-icon-close" @click.prevent.stop="closeTheTag(item, key)"></i></el-button>
+          <el-button
+            v-for="(item, key) in tabMenu"
+            :type="isActive(item) ? '' : 'info'"
+            :key="key"
+            plain
+            size="mini"
+            @click="linkTo(item)">{{ item.name }} <i
+              class="el-icon-close"
+              @click.prevent.stop="closeTheTag(item, key)"/></el-button>
         </div>
         <el-main class="inner-content">
-          <router-view></router-view>
+          <router-view/>
         </el-main>
-    </el-main>
+      </el-main>
+    </el-container>
   </el-container>
-</el-container>
 </template>
 
 <script>
@@ -87,6 +117,12 @@ export default {
         this.selectMenu(path)
       }
     }
+  },
+  created () {
+    cgiService.getUserMenu().then(res => {
+      this.menuData = res.data
+      this.$store.commit('setNavListMap', this.menuData)
+    })
   },
   methods: {
     linkTo (item) {
@@ -122,12 +158,6 @@ export default {
     setting () {
       this.$router.replace('/setting')
     }
-  },
-  created () {
-    cgiService.getUserMenu().then(res => {
-      this.menuData = res.data
-      this.$store.commit('setNavListMap', this.menuData)
-    })
   }
 }
 </script>
@@ -188,6 +218,9 @@ html,body{
 }
 .main-menu{
     flex: 1;
+    .is-active{
+      background: rgb(1,173,139)!important;
+    }
 }
 .el-menu-demo{
   border: none;

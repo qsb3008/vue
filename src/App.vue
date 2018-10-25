@@ -27,4 +27,7 @@
 .pointer{
   cursor: pointer;
 }
+  .ws-row td, .ws-row th{
+      padding: 5px 0!important;
+  }
 </style>

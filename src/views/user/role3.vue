@@ -14,39 +14,60 @@
       :is-fold="props.isFold"
       :expand-type="props.expandType"
       :selection-type="props.selectionType">
-        <template slot="pageOperation" scope="scope">
-            <div v-if="!(scope.row.operation instanceof Array)">
-                <el-tag class="tag" v-for="(val, key) in scope.row.operation" :key="key">{{val}}</el-tag>
-            </div>
-        </template>
-        <template slot="operation" scope="scope">
-          <div>
-            <el-button type="text" v-if="scope.row.level==1 || scope.row.level==2" @click="addMenu(scope.row)">新增</el-button>
-            <el-button type="text" @click="editMenu(scope.row)">编辑</el-button>
-            <el-button type="text" @click="delMenu(scope.row)">删除</el-button>
-          </div>
-        </template>
+      <template
+        slot="pageOperation"
+        scope="scope">
+        <div v-if="!(scope.row.operation instanceof Array)">
+          <el-tag
+            v-for="(val, key) in scope.row.operation"
+            :key="key"
+            class="tag">{{ val }}</el-tag>
+        </div>
+      </template>
+      <template
+        slot="operation"
+        scope="scope">
+        <div>
+          <el-button
+            v-if="scope.row.level==1 || scope.row.level==2"
+            type="text"
+            @click="addMenu(scope.row)">新增</el-button>
+          <el-button
+            type="text"
+            @click="editMenu(scope.row)">编辑</el-button>
+          <el-button
+            type="text"
+            @click="delMenu(scope.row)">删除</el-button>
+        </div>
+      </template>
     </zk-table>
     <el-dialog
-        title="新增菜单"
-        :visible.sync="showDialog"
-        width="30%"
-        @close="closeHandler">
-            <el-form ref="form" :model="metaForm" label-width="120px">
-                <el-form-item label="名称">
-                    <el-input v-model="metaForm.pagename"></el-input>
-                </el-form-item>
-                <el-form-item label="URL" v-show="(!editing && (metaForm.level == '3' || metaForm.level == '2')) || (editing && (metaForm.level == '3' || metaForm.level == '2'))">
-                    <el-input v-model="metaForm.pageurl"></el-input>
-                </el-form-item>
-                <el-form-item label="排序">
-                    <el-input v-model="metaForm.sort"></el-input>
-                </el-form-item>
-            </el-form>
-        <span slot="footer">
-            <el-button @click="showDialog = false">取 消</el-button>
-            <el-button type="primary" @click="submit">确 定</el-button>
-        </span>
+      :visible.sync="showDialog"
+      title="新增菜单"
+      width="30%"
+      @close="closeHandler">
+      <el-form
+        ref="form"
+        :model="metaForm"
+        label-width="120px">
+        <el-form-item label="名称">
+          <el-input v-model="metaForm.pagename"/>
+        </el-form-item>
+        <el-form-item
+          v-show="(!editing && (metaForm.level == '3' || metaForm.level == '2')) || (editing && (metaForm.level == '3' || metaForm.level == '2'))"
+          label="URL">
+          <el-input v-model="metaForm.pageurl"/>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input v-model="metaForm.sort"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button @click="showDialog = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="submit">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -56,7 +77,7 @@ import cgiService from '../../api/cgiService'
 import ZkTable from 'vue-table-with-tree-grid'
 
 export default {
-  name: 'example',
+  name: 'Example',
   components: {
     ZkTable
   },
@@ -117,6 +138,9 @@ export default {
       ]
     }
   },
+  created () {
+    this.queryPageList()
+  },
   methods: {
     addMenu (row = null) {
       this.showDialog = true
@@ -170,9 +194,6 @@ export default {
         this.data = res.data
       })
     }
-  },
-  created () {
-    this.queryPageList()
   }
 }
 </script>

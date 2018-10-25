@@ -1,4 +1,5 @@
 import { API } from '../basic'
+
 // 登录验证码
 const verificationCode = () => {
   return API.post('LoginInfo/getVaildCode').catch(err => { console.warn(err) })

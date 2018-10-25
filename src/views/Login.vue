@@ -1,43 +1,62 @@
 <template>
 
-<div class="main-box">
+  <div class="main-box">
     <div class="login-box">
-    <img src="../assets/images/logo.png" alt="">
-    <div class="wrapper">
+      <img
+        src="../assets/images/logo.png"
+        alt="">
+      <div class="wrapper">
         <header>
-        <div class="admin-img"></div>
+          <div class="admin-img"/>
         </header>
         <section>
-        <el-form  ref="form" :model="metaForm" label-width="120px">
+          <el-form
+            ref="form"
+            :model="metaForm"
+            label-width="120px">
             <el-row>
-                <el-col>
-                    <el-input v-model="metaForm.username" placeholder="请输入帐号">
-                    </el-input>
-                </el-col>
+              <el-col>
+                <el-input
+                  v-model="metaForm.username"
+                  placeholder="请输入帐号"/>
+              </el-col>
             </el-row><br>
             <el-row>
-                <el-col>
-                    <el-input v-model="metaForm.passwd" type="password" placeholder="请输入密码">
-                    </el-input>
-                </el-col>
+              <el-col>
+                <el-input
+                  v-model="metaForm.passwd"
+                  type="password"
+                  placeholder="请输入密码"/>
+              </el-col>
             </el-row><br>
             <el-row>
-                <el-col>
-                    <el-input v-model="metaForm.vcode" type="text" placeholder="请输入验证码">
-                        <template slot="append"><img v-if="imgSrc"  :src="imgSrc" style="position: relative;top:3px;" ></template>
-                    </el-input>
-                </el-col>
+              <el-col>
+                <el-input
+                  v-model="metaForm.vcode"
+                  type="text"
+                  placeholder="请输入验证码">
+                  <template slot="append">
+                    <img
+                      v-if="imgSrc"
+                      :src="imgSrc"
+                      class="valid-code"
+                      @click="refresh()" >
+                  </template>
+                </el-input>
+              </el-col>
             </el-row><br>
             <el-row>
-                <el-col>
-                    <el-button class="login-btn"  @click="loginIn">登录</el-button>
-                </el-col>
+              <el-col>
+                <el-button
+                  class="login-btn"
+                  @click="loginIn">登录</el-button>
+              </el-col>
             </el-row>
-        </el-form>
+          </el-form>
         </section>
+      </div>
     </div>
-    </div>
-</div>
+  </div>
 
 </template>
 
@@ -56,7 +75,15 @@ export default {
       noLoginIn: true
     }
   },
+  created () {
+    this.refresh()
+  },
   methods: {
+    refresh () {
+      cgiService.verificationCode().then(res => {
+        this.imgSrc = res.img
+      })
+    },
     loginIn () {
       cgiService.login(this.metaForm).then(res => {
         if (parseInt(res.code) === 0) {
@@ -66,11 +93,6 @@ export default {
         }
       })
     }
-  },
-  created () {
-    cgiService.verificationCode().then(res => {
-      this.imgSrc = res.img
-    })
   }
 }
 </script>
@@ -84,6 +106,11 @@ html,body{
   height: 100%;
   background: url('../assets/images/login-bg.png') no-repeat;
   background-size: 100% 100%;
+}
+.valid-code{
+  cursor: pointer;
+  position: relative;
+  top:3px;
 }
 .login-box{
   position: relative;

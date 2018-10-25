@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+const qs = require('qs');
 const API_ERROR_TYPE = {
   NETWORK_ERROR: 0,
   HTTP_STATUS_ERROR: 1,
@@ -45,14 +45,11 @@ const API = axios.create({
   baseURL: '/index.php/',
   timeout: 8000,
   headers: {
-    'Content-type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/x-www-form-urlencoded'
   },
   transformRequest: [function (data) {
-    let ret = ''
-    for (let it in data) {
-      ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-    }
-    return ret
+    let post_body = qs.stringify(data)
+    return post_body
   }]
 })
 
